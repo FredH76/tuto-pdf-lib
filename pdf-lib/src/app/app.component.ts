@@ -129,7 +129,20 @@ export class AppComponent {
    * 8- Fill Form Into PDF
    ***************************************/
   async fillFormIntoPdf() {
-    // Fill Form Into PDF
+    const formUrl = 'assets/pdf/form.pdf'
+    const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
+    const pdfDoc = await PDFDocument.load(formPdfBytes)
+    const form = pdfDoc.getForm();
+
+    const companyField = form.getTextField('company');
+    companyField.setText('Manufacture');
+
+    const positionField = form.getDropdown('position');
+    positionField.select('level4');
+
+    form.flatten()
+
+    this.saveDoc(pdfDoc, 'myFilledFormPdf.pdf')
   }
 
   /**************************************************************************************/
