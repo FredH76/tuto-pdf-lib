@@ -16,7 +16,8 @@ export class AppComponent {
    * 1- Create PDF
    ***************************************/
   async createPdfDoc() {
-    // TODO: Create PDF
+    const pdfDoc = await PDFDocument.create();
+    this.saveDoc(pdfDoc, 'myFirstPdf.pdf');
   }
 
   /****************************************
