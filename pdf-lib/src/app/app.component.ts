@@ -87,7 +87,18 @@ export class AppComponent {
    * 6- Insert Pdf Into PDF
    ***************************************/
   async InsertPdfIntoPdf() {
-    // TODO: Insert Pdf Into PDF
+    const pdfDoc = await PDFDocument.create();
+    const pdfPage = pdfDoc.addPage();
+    pdfPage.drawText('first Page', { x: 100, y: 750 });
+
+    const layoutUrl = 'assets/pdf/layout1.pdf';
+    const layoutPdfBytes = await fetch(layoutUrl).then(res => res.arrayBuffer())
+    const layoutPdfDoc = await PDFDocument.load(layoutPdfBytes);
+    const [layoutPage] = await pdfDoc.copyPages(layoutPdfDoc, [0])
+    //pdfDoc.addPage(layoutPage);
+    pdfDoc.insertPage(1, layoutPage);
+
+    this.saveDoc(pdfDoc, 'myPdfIntoPdf.pdf')
   }
 
   /****************************************
