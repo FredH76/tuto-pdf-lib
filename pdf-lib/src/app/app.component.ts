@@ -49,7 +49,22 @@ export class AppComponent {
    * 4- Insert Image Into Page
    ***************************************/
   async InsertImageIntoPage() {
-    // TODO: Insert Image Into Page
+    const pdfDoc = await PDFDocument.create();
+    const pdfPage = pdfDoc.addPage();
+
+    const pngUrl = 'assets/image/manufacture.png';
+    const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer());
+    const pngImage = await pdfDoc.embedPng(pngImageBytes);
+    pdfPage.drawImage(pngImage, { x: 0, y: 600 });
+
+    const scaleDims = pngImage.scale(0.5);
+    pdfPage.drawImage(pngImage, { x: 100, y: 500, ...scaleDims });
+
+    pdfPage.drawRectangle({ x: 100, y: 350, width: 200, height: 100, color: this.white, borderWidth: 1 });
+    const fitDims = pngImage.scaleToFit(200, 100);
+    pdfPage.drawImage(pngImage, { x: 100, y: 350, ...fitDims })
+
+    this.saveDoc(pdfDoc, 'myFormsIntoPage.pdf')
   }
 
   /****************************************
