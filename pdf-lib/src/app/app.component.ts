@@ -24,7 +24,12 @@ export class AppComponent {
    * 2- Draw Text Into Page
    ***************************************/
   async drawTextIntoPage() {
-    // TODO: Draw Text Into Page
+    const pdfDoc = await PDFDocument.create();
+    const pdfPage = pdfDoc.addPage();
+
+    const size = pdfPage.getSize();
+    pdfPage.drawText('My Text Into Page', { x: size.width / 2, y: size.height / 2 });
+    this.saveDoc(pdfDoc, 'myTextIntoPage.pdf');
   }
 
   /****************************************
