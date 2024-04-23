@@ -105,7 +105,24 @@ export class AppComponent {
    * 7- Insert Form Into PDF
    ***************************************/
   async insertFormIntoPdf() {
-    // TODO: Insert Form Into PDF
+    const pdfDoc = await PDFDocument.create();
+
+    const formUrl = 'assets/pdf/layout2.pdf';
+    const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
+    const formPdfDoc = await PDFDocument.load(formPdfBytes);
+    const [formPage] = await pdfDoc.copyPages(formPdfDoc, [0])
+    pdfDoc.addPage(formPage);
+
+    const form = pdfDoc.getForm();
+
+    const companyField = form.createTextField('company');
+    companyField.addToPage(formPage, { x: 190, y: 700, width: 220 });
+
+    const positionField = form.createDropdown('position');
+    positionField.addOptions(['level1', 'level2', 'level3', 'level4']);
+    positionField.addToPage(formPage, { x: 195, y: 455, width: 120 });
+
+    this.saveDoc(pdfDoc, 'myFormIntoPdf.pdf')
   }
 
   /****************************************
