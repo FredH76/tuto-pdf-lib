@@ -36,7 +36,13 @@ export class AppComponent {
    * 3- Draw Figure Into Page
    ***************************************/
   async drawFigureIntoPage() {
-    // TODO: Draw Figure Into Page
+    const pdfDoc = await PDFDocument.create();
+    const pdfPage = pdfDoc.addPage();
+
+    pdfPage.drawCircle({ x: 100, y: 750, size: 72, borderWidth: 2, borderColor: this.red, color: this.white });
+    pdfPage.drawSquare({ x: 50, y: 700, size: 100 });
+
+    this.saveDoc(pdfDoc, 'myFormsIntoPage.pdf');
   }
 
   /****************************************
